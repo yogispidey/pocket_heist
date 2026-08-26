@@ -12,13 +12,6 @@ export default function Home() {
           P<Clock8 className="logo" strokeWidth={2.75} />cket Heist
         </h1>
         <div>Tiny missions. Big office mischief.</div>
-        <ol>
-          <li>Sign up or log in to get started.</li>
-          <li>Browse active heists on your dashboard.</li>
-          <li>Create a new heist and assign it to a colleague.</li>
-          <li>Complete assigned heists before they expire to earn points.</li>
-          <li>Check the leaderboard to see who the top agent is.</li>
-        </ol>
       </div>
     </div>
   )
