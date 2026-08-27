@@ -42,3 +42,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+tool-use.json
+hook-debug.log
+CUsersyogesh.cAppDataLocalTempclaude-hook-check.txt
