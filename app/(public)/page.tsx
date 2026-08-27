@@ -2,16 +2,19 @@
 // when logged in --> to /heists
 // when not logged in --> to /login
 
-import { Clock8 } from "lucide-react"
+import { Clock8 } from "lucide-react";
 
 export default function Home() {
   return (
     <div className="center-content">
       <div className="page-content">
         <h1>
-          P<Clock8 className="logo" strokeWidth={2.75} />cket Heist
+          P<Clock8 className="logo" strokeWidth={2.75} />
+          cket Heist
         </h1>
-        <div>Tiny missions. Big office mischief.</div>
+        <div style={{ color: "var(--color-secondary)", fontWeight: 600 }}>
+          The office is a battlefield. Choose your missions.
+        </div>
         <p>
           Pocket Heist turns your office into a playground. Assign sneaky
           missions to your colleagues — swap someone's keyboard shortcuts, move
@@ -25,5 +28,5 @@ export default function Home() {
         </p>
       </div>
     </div>
-  )
+  );
 }

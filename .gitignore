@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# local Claude Code settings (personal hooks, not for the team)
+.claude/settings.local.json
+
 # dependencies
 /node_modules
 /.pnp
