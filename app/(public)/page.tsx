@@ -12,6 +12,17 @@ export default function Home() {
           P<Clock8 className="logo" strokeWidth={2.75} />cket Heist
         </h1>
         <div>Tiny missions. Big office mischief.</div>
+        <p>
+          Pocket Heist turns your office into a playground. Assign sneaky
+          missions to your colleagues — swap someone's keyboard shortcuts, move
+          the stapler to the top shelf, or challenge them to speak only in
+          riddles until 3pm. Earn points, climb the leaderboard, and defend your
+          desk with honour.
+        </p>
+        <p>
+          Every heist has a time limit. Complete it before it expires, or face
+          the eternal shame of the <em>Failed Missions</em> board.
+        </p>
       </div>
     </div>
   )

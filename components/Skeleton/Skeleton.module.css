@@ -1,0 +1,38 @@
+@reference "../../app/globals.css";
+
+.card {
+  @apply bg-light rounded-lg p-5;
+}
+
+.header {
+  @apply flex items-center gap-4 mb-5;
+}
+
+.avatar {
+  @apply rounded-full bg-lighter shrink-0;
+  width: 3rem;
+  height: 3rem;
+}
+
+.headerLines {
+  @apply flex flex-col gap-2 flex-1;
+}
+
+.line {
+  @apply bg-lighter rounded-sm h-3;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.w100 { width: 100%; }
+.w80  { width: 80%; }
+.w70  { width: 70%; }
+.w50  { width: 50%; }
+
+.body {
+  @apply flex flex-col gap-3;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
