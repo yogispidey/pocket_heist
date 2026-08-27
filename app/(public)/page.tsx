@@ -13,7 +13,7 @@ export default function Home() {
           cket Heist
         </h1>
         <div style={{ color: "var(--color-secondary)", fontWeight: 600 }}>
-          The office is a battlefield. Choose your missions.
+          Turn your 9-to-5 into a 9-to-fun.
         </div>
         <p>
           Pocket Heist turns your office into a playground. Assign sneaky
