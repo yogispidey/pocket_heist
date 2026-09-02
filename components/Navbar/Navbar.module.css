@@ -15,3 +15,8 @@
 svg.logo {
   display: inline-block;
 }
+
+.createBtn {
+  background: linear-gradient(to right, #9810fa, #e60076);
+  @apply flex items-center gap-2 px-4 py-2 rounded-[10px] text-white text-base font-normal tracking-[-0.02em] transition-opacity hover:opacity-80;
+}
