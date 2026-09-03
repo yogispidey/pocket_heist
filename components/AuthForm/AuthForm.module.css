@@ -36,3 +36,8 @@
 .error {
   @apply text-error text-sm;
 }
+
+.success {
+  @apply text-sm;
+  color: #22c55e;
+}
