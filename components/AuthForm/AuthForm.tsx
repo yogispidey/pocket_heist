@@ -3,6 +3,11 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "@/lib/firebase";
+import { generateCodename } from "@/lib/generateCodename";
 import styles from "./AuthForm.module.css";
 
 interface AuthFormProps {
@@ -26,17 +31,56 @@ const copy = {
   },
 };
 
+function getErrorMessage(code: string): string {
+  switch (code) {
+    case "auth/email-already-in-use":
+      return "An account with this email already exists.";
+    case "auth/weak-password":
+      return "Password must be at least 6 characters.";
+    default:
+      return "Something went wrong. Please try again.";
+  }
+}
+
 export default function AuthForm({ mode }: AuthFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const { title, submit, prompt, switchHref, switchLabel } = copy[mode];
 
-  // no auth backend yet — log the details so the form can be exercised
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log({ email, password });
+    if (mode !== "signup") return;
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      const codename = generateCodename();
+      await updateProfile(user, { displayName: codename });
+
+      try {
+        await setDoc(doc(db, "users", user.uid), { id: user.uid, codename });
+      } catch (firestoreErr) {
+        console.error("Firestore write failed:", firestoreErr);
+      }
+
+      router.push("/heists");
+    } catch (err) {
+      const code = (err as { code?: string }).code ?? "";
+      setError(getErrorMessage(code));
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -53,6 +97,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
               type="email"
               className={styles.input}
               value={email}
+              disabled={isLoading}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
@@ -66,6 +111,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
                 type={showPassword ? "text" : "password"}
                 className={styles.input}
                 value={password}
+                disabled={isLoading}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <button
@@ -79,7 +125,9 @@ export default function AuthForm({ mode }: AuthFormProps) {
             </div>
           </div>
 
-          <button type="submit" className="btn">
+          {error && <p className={styles.error}>{error}</p>}
+
+          <button type="submit" className="btn" disabled={isLoading}>
             {submit}
           </button>
         </form>

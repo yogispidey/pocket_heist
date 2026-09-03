@@ -2,7 +2,22 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, afterEach } from "vitest";
 
-// component imports
+vi.mock("next/navigation", () => ({
+  useRouter: vi.fn(() => ({ push: vi.fn() })),
+}));
+vi.mock("firebase/auth", () => ({
+  createUserWithEmailAndPassword: vi.fn(),
+  updateProfile: vi.fn(),
+}));
+vi.mock("firebase/firestore", () => ({
+  setDoc: vi.fn(),
+  doc: vi.fn(() => ({})),
+}));
+vi.mock("@/lib/firebase", () => ({ default: {}, auth: {}, db: {} }));
+vi.mock("@/lib/generateCodename", () => ({
+  generateCodename: vi.fn(() => "TestCodename"),
+}));
+
 import AuthForm from "@/components/AuthForm";
 
 describe("AuthForm", () => {
@@ -46,36 +61,6 @@ describe("AuthForm", () => {
 
     await user.click(screen.getByRole("button", { name: /hide password/i }));
     expect(password).toHaveAttribute("type", "password");
-  });
-
-  it("logs the credentials when the login form is submitted", async () => {
-    const user = userEvent.setup();
-    const log = vi.spyOn(console, "log").mockImplementation(() => {});
-    render(<AuthForm mode="login" />);
-
-    await user.type(screen.getByLabelText("Email"), "thief@heist.com");
-    await user.type(screen.getByLabelText("Password"), "stapler123");
-    await user.click(screen.getByRole("button", { name: /log in/i }));
-
-    expect(log).toHaveBeenCalledWith({
-      email: "thief@heist.com",
-      password: "stapler123",
-    });
-  });
-
-  it("logs the credentials when the signup form is submitted", async () => {
-    const user = userEvent.setup();
-    const log = vi.spyOn(console, "log").mockImplementation(() => {});
-    render(<AuthForm mode="signup" />);
-
-    await user.type(screen.getByLabelText("Email"), "newbie@heist.com");
-    await user.type(screen.getByLabelText("Password"), "riddles3pm");
-    await user.click(screen.getByRole("button", { name: /sign up/i }));
-
-    expect(log).toHaveBeenCalledWith({
-      email: "newbie@heist.com",
-      password: "riddles3pm",
-    });
   });
 
   it("links from the login form to the signup page", () => {
