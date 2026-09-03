@@ -4,7 +4,11 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { generateCodename } from "@/lib/generateCodename";
@@ -37,6 +41,12 @@ function getErrorMessage(code: string): string {
       return "An account with this email already exists.";
     case "auth/weak-password":
       return "Password must be at least 6 characters.";
+    case "auth/invalid-credential":
+    case "auth/user-not-found":
+    case "auth/wrong-password":
+      return "Invalid email or password.";
+    case "auth/too-many-requests":
+      return "Too many attempts. Please try again later.";
     default:
       return "Something went wrong. Please try again.";
   }
@@ -48,33 +58,38 @@ export default function AuthForm({ mode }: AuthFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const router = useRouter();
 
   const { title, submit, prompt, switchHref, switchLabel } = copy[mode];
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (mode !== "signup") return;
-
     setIsLoading(true);
     setError(null);
+    setSuccess(null);
 
     try {
-      const { user } = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password,
-      );
-      const codename = generateCodename();
-      await updateProfile(user, { displayName: codename });
+      if (mode === "signup") {
+        const { user } = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password,
+        );
+        const codename = generateCodename();
+        await updateProfile(user, { displayName: codename });
 
-      try {
-        await setDoc(doc(db, "users", user.uid), { id: user.uid, codename });
-      } catch (firestoreErr) {
-        console.error("Firestore write failed:", firestoreErr);
+        try {
+          await setDoc(doc(db, "users", user.uid), { id: user.uid, codename });
+        } catch (firestoreErr) {
+          console.error("Firestore write failed:", firestoreErr);
+        }
+
+        router.push("/heists");
+      } else {
+        await signInWithEmailAndPassword(auth, email, password);
+        setSuccess("You're logged in!");
       }
-
-      router.push("/heists");
     } catch (err) {
       const code = (err as { code?: string }).code ?? "";
       setError(getErrorMessage(code));
@@ -126,6 +141,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
           </div>
 
           {error && <p className={styles.error}>{error}</p>}
+          {success && <p className={styles.success}>{success}</p>}
 
           <button type="submit" className="btn" disabled={isLoading}>
             {submit}
