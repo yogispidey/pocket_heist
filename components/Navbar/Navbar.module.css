@@ -16,6 +16,13 @@ svg.logo {
   display: inline-block;
 }
 
+.logoutBtn {
+  @apply px-4 py-2 rounded-[10px] text-white text-base font-normal tracking-[-0.02em];
+  @apply border border-white bg-transparent;
+  @apply hover:opacity-80 transition-opacity;
+  @apply disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
 .createBtn {
   background: linear-gradient(to right, #9810fa, #e60076);
   @apply flex items-center gap-2 px-4 py-2 rounded-[10px] text-white text-base font-normal tracking-[-0.02em] transition-opacity hover:opacity-80;
