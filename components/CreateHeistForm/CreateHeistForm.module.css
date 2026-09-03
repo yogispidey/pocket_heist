@@ -1,0 +1,28 @@
+@reference "../../app/globals.css";
+
+.form {
+  @apply flex flex-col gap-4 mx-auto mt-6 w-full max-w-sm;
+}
+
+.field {
+  @apply flex flex-col gap-1;
+}
+
+.field label {
+  @apply text-sm font-medium;
+}
+
+.input {
+  @apply w-full px-3 py-2 rounded-md bg-light border border-lighter text-heading;
+  @apply outline-none focus:border-primary;
+}
+
+.textarea {
+  @apply w-full px-3 py-2 rounded-md bg-light border border-lighter text-heading;
+  @apply outline-none focus:border-primary resize-y;
+  min-height: 100px;
+}
+
+.error {
+  @apply text-error text-sm;
+}
