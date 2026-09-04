@@ -1,0 +1,47 @@
+@reference "../../app/globals.css";
+
+.card {
+  @apply bg-lighter rounded-[10px] flex flex-col;
+  border: 1px solid var(--color-border);
+  gap: 12px;
+  padding: 21px 21px 1px;
+  min-height: 178px;
+}
+
+.titleRow {
+  @apply flex justify-between items-start gap-2;
+}
+
+.meta {
+  @apply flex flex-col;
+  gap: 8px;
+}
+
+.metaRow {
+  @apply flex items-center gap-2;
+}
+
+.pulse {
+  @apply bg-light rounded animate-pulse;
+}
+
+.titleBlock {
+  height: 20px;
+  width: 70%;
+}
+
+.iconBlock {
+  height: 16px;
+  width: 16px;
+  flex-shrink: 0;
+}
+
+.labelBlock {
+  height: 14px;
+  width: 24px;
+}
+
+.valueBlock {
+  height: 14px;
+  width: 80px;
+}
