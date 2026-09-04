@@ -36,12 +36,6 @@ export default function Navbar() {
           <div>Tiny missions. Big office mischief.</div>
         </header>
         <ul>
-          <li>
-            <Link href="/heists/create" className={styles.createBtn}>
-              <Plus size={20} />
-              Create New Heist
-            </Link>
-          </li>
           {!isLoading && user && (
             <li>
               <button
@@ -53,6 +47,12 @@ export default function Navbar() {
               </button>
             </li>
           )}
+          <li>
+            <Link href="/heists/create" className={styles.createBtn}>
+              <Plus size={20} />
+              Create New Heist
+            </Link>
+          </li>
         </ul>
       </nav>
     </div>
