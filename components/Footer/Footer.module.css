@@ -1,0 +1,11 @@
+@reference "../../app/globals.css";
+
+.footer {
+  @apply border-t py-6 text-center;
+  border-color: var(--color-border);
+}
+
+.text {
+  @apply text-sm;
+  color: var(--color-body);
+}
