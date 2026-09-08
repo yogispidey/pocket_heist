@@ -1,16 +1,12 @@
 import Link from "next/link";
 import { CircleX, User, Calendar } from "lucide-react";
 import { Heist } from "@/types/firestore";
+import Badge from "@/components/Badge";
 import styles from "./ExpiredHeistCard.module.css";
 
 interface ExpiredHeistCardProps {
   heist: Heist;
 }
-
-const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
-  success: { label: "SUCCESS", className: styles.badgeSuccess },
-  failure: { label: "FAILED", className: styles.badgeFailed },
-};
 
 export default function ExpiredHeistCard({ heist }: ExpiredHeistCardProps) {
   const formattedDeadline = heist.deadline
@@ -23,12 +19,12 @@ export default function ExpiredHeistCard({ heist }: ExpiredHeistCardProps) {
       })
     : "No deadline";
 
-  const { label: badgeLabel, className: badgeClass } = STATUS_CONFIG[
-    heist.finalStatus ?? ""
-  ] ?? {
-    label: "PENDING",
-    className: styles.badgePending,
-  };
+  const badgeVariant =
+    heist.finalStatus === "success"
+      ? "success"
+      : heist.finalStatus === "failure"
+        ? "failure"
+        : "pending";
 
   return (
     <div className={styles.card}>
@@ -48,7 +44,7 @@ export default function ExpiredHeistCard({ heist }: ExpiredHeistCardProps) {
             <Calendar size={12} className={styles.icon} aria-hidden="true" />
             <span>{formattedDeadline}</span>
           </div>
-          <span className={`${styles.badge} ${badgeClass}`}>{badgeLabel}</span>
+          <Badge variant={badgeVariant} />
         </div>
       </div>
 
